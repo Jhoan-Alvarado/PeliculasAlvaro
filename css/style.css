@@ -209,6 +209,7 @@ body {
     
     #contenedorFiltrado div h1{
       color: wheat;
+      text-align: center;
     }
     
     @media (max-width: 480px) {
