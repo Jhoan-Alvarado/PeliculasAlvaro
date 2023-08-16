@@ -88,3 +88,92 @@ const contenido = [
   
     mostrarContenido(contenidoFiltrado);
   }
+
+  function mostrarContenido(contenidoAMostrar) {
+    contenidoFiltradoDiv.innerHTML = '';
+  
+    contenidoAMostrar.forEach(item => {
+      const itemDiv = document.createElement('div');
+      itemDiv.textContent = `${item.tipo}: ${item.titulo}`;
+      contenidoFiltradoDiv.appendChild(itemDiv);
+
+    });
+  }
+ 
+  
+  tipoSelect.addEventListener('change', filtrarContenido);
+  generoSelect.addEventListener('change', filtrarContenido);
+  busquedaInput.addEventListener('input', filtrarContenido);
+  
+  // Inicializar la visualización con el contenido completo
+  mostrarContenido(contenido);
+  
+  
+const modal = document.getElementById('modal');
+const closeModal = document.getElementById('closeModal');
+const modalTitulo = document.getElementById('modalTitulo');
+const modalTipoGenero = document.getElementById('modalTipoGenero');
+const modalDescripcion = document.getElementById('modalDescripcion');
+const modalImg = document.getElementById('modalImg')
+
+function crearBotonMostrarInfo(info) {
+  const boton = document.createElement('button');
+  boton.textContent = 'Ver info';
+  boton.addEventListener('click', () => {
+    mostrarModal(info);
+  });
+  return boton;
+}
+
+function mostrarContenido(contenidoAMostrar) {
+  contenidoFiltradoDiv.innerHTML = '';
+
+  contenidoAMostrar.forEach(item => {
+    const itemDiv = document.createElement('div');
+    
+    // Crear elementos HTML para el tipo y el título
+    const tipoElement = document.createElement('p');
+    tipoElement.textContent = item.tipo;
+    
+    const tituloElement = document.createElement('h1');
+    tituloElement.textContent = item.titulo;
+
+    const imgPelicula = document.createElement('img');
+    imgPelicula.src = item.image;  
+
+    // Agregar los elementos al div del item
+    itemDiv.appendChild(tipoElement);
+    itemDiv.appendChild(tituloElement);
+    itemDiv.appendChild(imgPelicula);
+
+    const botonMostrarInfo = crearBotonMostrarInfo(item);
+    itemDiv.appendChild(botonMostrarInfo);
+    
+    contenidoFiltradoDiv.appendChild(itemDiv);
+  });
+}
+
+
+
+
+
+function mostrarModal(info) {
+  modalTitulo.textContent = info.titulo;
+  modalTipoGenero.textContent = `${info.tipo} - ${info.genero}`;
+  modalVideo.src =`${info.trailer}`;
+  modalDescripcion.textContent = `${info.description}`;
+  modalImg.src = `${info.image}`;
+  modal.style.display = 'block';
+}
+
+closeModal.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+contenidoFiltradoDiv.addEventListener('click', event => {
+  const clickedItem = event.target.textContent.split(': ')[1];
+  const info = contenido.find(item => item.titulo === clickedItem);
+  if (info) {
+    mostrarModal(info);
+  }
+});
